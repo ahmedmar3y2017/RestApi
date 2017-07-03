@@ -1,27 +1,31 @@
 package rest;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import Entities.Student;
+import SingletonHibernate.HibernateConnection;
+//import com.fasterxml.jackson.core.JsonProcessingException;
+//import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
+
+import javax.print.attribute.standard.Media;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by programmer on 02/07/17.
  */
 
-@Path("/myresources")
+@Path("/students")
 public class myresources {
 
     @GET
-    @Produces(MediaType.APPLICATION_XML)
-    public List<student>  GetResources() throws SQLException {
+    @Produces({MediaType.APPLICATION_XML ,MediaType.APPLICATION_JSON})
+    public List<Student> GetResources() throws SQLException {
 //String names="";
 //        Connection connection=  databaseConnection.GetConnection();
 //        PreparedStatement preparedStatement=connection.prepareStatement("select * from student");
@@ -34,16 +38,56 @@ public class myresources {
 //
 //        }
 
-student student1 =new student();
-student1.setUsername("ahmed");
-student1.setPassword("123");
-        student student2 =new student();
-        student2.setUsername("mohamed");
-        student2.setPassword("987");
-        List<student> arrayList= Arrays.asList(student1,student2);
+//student student1 =new student();
+//student1.setUsername("ahmed");
+//student1.setPassword("123");
+//        student student2 =new student();
+//        student2.setUsername("mohamed");
+//        student2.setPassword("987");
+        SessionFactory sessionFactory = HibernateConnection.GetConnection();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
 
-        return  arrayList;
+        Criteria criteria=session.createCriteria(Student.class);
+        java.util.List<Student> list=criteria.list();
+        session.getTransaction().commit();
+        return  list;
 
     }
+
+    @GET
+    @Path("/{id}")
+    @Produces({MediaType.APPLICATION_XML ,MediaType.APPLICATION_JSON})
+    public  Student GetStudent(@PathParam("id") int id) throws SQLException {
+
+        SessionFactory sessionFactory = HibernateConnection.GetConnection();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+    Student student=(Student) session.get(Student.class,id);
+
+//       Student student=(Student) criteria.uniqueResult();
+        session.getTransaction().commit();
+
+        return  student;
+
+    }
+
+
+
+    @POST
+    @Path("student")
+    @Consumes({MediaType.APPLICATION_XML ,MediaType.APPLICATION_JSON})
+    public Student save(Student student){
+        SessionFactory sessionFactory = HibernateConnection.GetConnection();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+session.save(student);
+        session.getTransaction().commit();
+
+        return  student;
+    }
+
+
 
 }
