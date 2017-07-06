@@ -7,7 +7,15 @@
     <groupId>groupId</groupId>
     <artifactId>RestApi</artifactId>
     <version>1.0-SNAPSHOT</version>
-<packaging>war</packaging>
+    <packaging>war</packaging>
+    <repositories>
+        <repository>
+            <id>maven2-repository.java.net</id>
+            <name>Java.net Repository for Maven</name>
+            <url>http://download.java.net/maven/2/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
     <properties>
         <jersey2.version>2.19</jersey2.version>
         <jaxrs.version>2.0.1</jaxrs.version>
@@ -66,7 +74,11 @@
             <version>${version.jersey}</version>
         </dependency>
         -->
-
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>${jersey2.version}</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
@@ -80,7 +92,18 @@
 
     </dependencies>
 
-
+    <build>
+        <finalName>JerseyDemos</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     
 </project>

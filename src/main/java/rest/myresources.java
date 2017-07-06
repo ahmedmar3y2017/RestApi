@@ -12,9 +12,15 @@ import org.hibernate.criterion.Restrictions;
 
 import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
+import java.io.IOException;
+import java.nio.file.*;
 import java.sql.SQLException;
 import java.util.List;
+
 
 /**
  * Created by programmer on 02/07/17.
@@ -22,7 +28,7 @@ import java.util.List;
 
 @Path("/students")
 public class myresources {
-
+//    ************************* Default ***********************************
     @GET
     @Produces({MediaType.APPLICATION_XML ,MediaType.APPLICATION_JSON})
     public List<Student> GetResources() throws SQLException {
@@ -74,7 +80,7 @@ public class myresources {
     }
 
 
-
+//    **************************************************************************************
     @POST
     @Path("student")
     @Consumes({MediaType.APPLICATION_XML ,MediaType.APPLICATION_JSON})
